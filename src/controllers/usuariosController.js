@@ -36,7 +36,7 @@ usuarioController.register = (req,res)=>{
 
 usuarioController.login = (req,res)=>{
     let usuario = req.body
-    conexion.query("Select correo,contrasenia,idUsuario from usuario where correo =?",[usuario.correo],(error,usuarios,fields)=>{
+    conexion.query("Select correo,contrasenia,idUsuario,idTipoUsuario_fk as tipoUsuario from usuario where correo =?",[usuario.correo],(error,usuarios,fields)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"error de servidor de base de datos",
@@ -55,6 +55,8 @@ usuarioController.login = (req,res)=>{
                 })
             }else{
                 req.session.idUusario = user.idUsuario;
+                req.session.tipoUsuario = user.tipoUsuario;
+                console.log(req.session.tipoUsuario)
                 return res.status(200).json({
                     mensaje:"usuario logueado"
                 })

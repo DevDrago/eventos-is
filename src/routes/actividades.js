@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
 const {verificarAutenticacion} = require("../middlewares/verificarAutenticacion.js")
+const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 const  actividadesController = require("../controllers/actividadesController")
 
 
-app.post("/actividades/crear",actividadesController.crear)
+app.post("/actividades/crear",[verificarAutenticacion,verificarTipoUsuario],actividadesController.crear)
 
 app.get("/actividades/categorias",actividadesController.categorias)
 
