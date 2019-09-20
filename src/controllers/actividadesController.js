@@ -18,6 +18,20 @@ actividadController.crear = (req,res)=>{
     })
 }
 
+actividadController.categorias = (req,res)=>{
+    conexion.query("SELECT idCategoriaActividad,categoriaActividad FROM categoria_actividad",(error,categorias)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            categorias
+        })
+    })
+}
+
 
 
 

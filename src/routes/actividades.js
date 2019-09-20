@@ -6,4 +6,6 @@ const  actividadesController = require("../controllers/actividadesController")
 
 app.post("/actividades/crear",actividadesController.crear)
 
+app.get("/actividades/categorias",actividadesController.categorias)
+
 module.exports = app;
