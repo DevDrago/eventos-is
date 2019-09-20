@@ -70,4 +70,18 @@ usuarioController.logout = (req,res)=>{
     })
 }
 
+usuarioController.tiposUsuario =(req,res)=>{
+    conexion.query("SELECT idTipoUsuario,tipoUsuario FROM tipo_usuario",(error,tiposUsuarios)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            tiposUsuarios
+        })
+    })
+}
+
 module.exports = usuarioController
