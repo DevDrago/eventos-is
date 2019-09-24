@@ -5,6 +5,7 @@ const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 
 const eventosController = require("../controllers/eventoController.js");
 
+app.get("/eventos",eventosController.eventos)
 app.post("/eventos/crear",[verificarAutenticacion,verificarTipoUsuario],eventosController.crear)
 
 module.exports = app;

@@ -5,6 +5,7 @@ const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 const  actividadesController = require("../controllers/actividadesController")
 
 
+app.get("/actividades", actividadesController.actividades)
 app.post("/actividades/crear",[verificarAutenticacion,verificarTipoUsuario],actividadesController.crear)
 
 app.get("/actividades/categorias",actividadesController.categorias)
