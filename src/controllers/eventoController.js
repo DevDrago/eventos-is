@@ -33,5 +33,42 @@ eventoController.crear = (req,res)=>{
     })
 }
 
+eventoController.actualizarEvento = (req,res)=>{
+    let evento = req.body;
+    conexion.query(`Update evento set nombreEvento = ?, idUsuario_fk =?,
+                    fechaInicio = STR_TO_DATE( ?, '%d-%m-%Y' ), fechaFin = STR_TO_DATE( ?, '%d-%m-%Y' )
+                    Where idEvento = ?`,
+                    [evento.nombreEvento,req.session.idUusario,evento.fechaInicio,evento.fechaFinal, evento.idEvento],(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error,
+            })
+        }
+        if(result){
+            return res.status(200).json({
+                mensaje:"Evento actualizado con éxito"
+            })
+        }
+    })
+}
+
+eventoController.eliminarEvento = (req,res)=>{
+    let evento = req.body;
+    conexion.query(`Delete from evento Where idEvento = ?`, [evento.idEvento],(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error,
+            })
+        }
+        if(result){
+            return res.status(200).json({
+                mensaje:"Evento eliminado con éxito"
+            })
+        }
+    })
+}
+
 
 module.exports = eventoController
