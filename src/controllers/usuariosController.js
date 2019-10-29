@@ -2,6 +2,8 @@ const usuarioController = {}
 const connection= require("../config/dbConnection.js")
 const conexion = connection();
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 usuarioController.register = (req,res)=>{
     let usuario = req.body;
@@ -9,24 +11,31 @@ usuarioController.register = (req,res)=>{
         if(error){
             return res.status(500).json({
                 error,
-                mensaje:"error en base de datos"
+                mensaje:"Error en base de datos"
             })
         }
         if(usuarios.length>0){
             return res.status(400).json({
-                mensaje:"usuario con numCuentaEmpleado existente"
+                mensaje:"Usuario con número de cuenta/empleado o correo existente"
             })
         }else{
             usuario.contrasenia = bcrypt.hashSync(usuario.contrasenia,10)
             conexion.query("Insert into usuario (idTipoUsuario_fk,numCuentaEmpleado,nombres,apellidos,correo,telefono,contrasenia) VALUES (?,?,?,?,?,?,?)",[usuario.tipoUsuario,usuario.numCuentaEmpleado,usuario.nombres,usuario.apellidos,usuario.correo,usuario.telefono,usuario.contrasenia],(error,result)=>{
                 if(error){
-                    return res.status(200).json({
+                    return res.status(500).json({
                         error
                     })
                 }
                 if(result){
-                    return res.status(200).json({
-                        mensaje:"se ha creado un nuevo Usuario"
+                    conexion.query("Select idUsuario, idTipoUsuario_fk as tipoUsuario, numCuentaEmpleado, nombres, apellidos, correo, telefono from usuario where idUsuario = ?",
+                    [result.insertId],(error, usuarioRegistrado)=>{
+                        if(error){
+                            return res.status(500).json({error, mensaje:"Error al obtener el usuario registrado"});
+                        }
+                        if(usuarioRegistrado){
+                            let token = jwt.sign({ id: result.insertId }, config.secret, {expiresIn: 86400});
+                            res.status(200).json({ auth: true, token: token, user: usuarioRegistrado[0], mensaje:"Se ha creado un nuevo Usuario" });
+                        }
                     })
                 }
             })
@@ -36,29 +45,35 @@ usuarioController.register = (req,res)=>{
 
 usuarioController.login = (req,res)=>{
     let usuario = req.body
-    conexion.query("Select correo,contrasenia,idUsuario,idTipoUsuario_fk as tipoUsuario from usuario where correo =?",[usuario.correo],(error,usuarios,fields)=>{
+    conexion.query("Select nombres, apellidos, telefono, correo,contrasenia,idUsuario,idTipoUsuario_fk as tipoUsuario from usuario where correo =?",[usuario.correo],(error,usuarios,fields)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos",
                 error
             })
         }
         if(usuarios.length==0){
             return res.status(404).json({
-                mensaje:"no existe ningun usuario con este correo"
+                auth:false,
+                token:null,
+                mensaje:"No existe ningún usuario con este correo"
             })
         }else{
             let user = usuarios[0]
             if (!bcrypt.compareSync(usuario.contrasenia,user.contrasenia)){
                 return res.status(403).json({
-                    mensaje:"contrasenia incorrecta"
+                    auth:false,
+                    token:null,
+                    mensaje:"Contrasenia incorrecta"
                 })
             }else{
                 req.session.idUusario = user.idUsuario;
                 req.session.tipoUsuario = user.tipoUsuario;
+                let token = jwt.sign({ id: usuarios.idUsuario }, config.secret, { expiresIn: 86400});
                 console.log(req.session.tipoUsuario)
                 return res.status(200).json({
-                    mensaje:"usuario logueado"
+                    auth: true, token: token, user: user,
+                    mensaje:"Usuario logueado"
                 })
             }
         }
@@ -68,7 +83,7 @@ usuarioController.login = (req,res)=>{
 usuarioController.logout = (req,res)=>{
     req.session.destroy();
     return res.status(200).json({
-        mensaje:'deslogueado'
+        mensaje:'Deslogueado'
     })
 }
 
@@ -76,7 +91,7 @@ usuarioController.tiposUsuario =(req,res)=>{
     conexion.query("SELECT idTipoUsuario,tipoUsuario FROM tipo_usuario",(error,tiposUsuarios)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos",
                 error
             })
         }
