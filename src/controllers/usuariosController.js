@@ -101,4 +101,45 @@ usuarioController.tiposUsuario =(req,res)=>{
     })
 }
 
+//Listas para selects
+usuarioController.getOrganizadores = (req,res) => {
+    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as organizador FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            organizadores
+        })
+    })   
+}
+usuarioController.getCoordinadores = (req,res) => {
+    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as coordinador FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            coordinadores
+        })
+    })   
+}
+usuarioController.getApoyos = (req,res) => {
+    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as apoyo FROM usuario where idTipoUsuario_fk = 4",(error,apoyos)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            apoyos
+        })
+    })   
+}
+
 module.exports = usuarioController

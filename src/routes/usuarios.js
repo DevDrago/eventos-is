@@ -8,4 +8,9 @@ app.post("/usuarios/login",usuarioController.login)
 app.get("/usuarios/logout",verificarAutenticacion,usuarioController.logout)
 app.get("/usuarios/tipos",usuarioController.tiposUsuario)
 
+//Listas para selects
+app.get("/usuarios/organizadores",usuarioController.getOrganizadores)
+app.get("/usuarios/coordinadores",usuarioController.getCoordinadores)
+app.get("/usuarios/apoyos",usuarioController.getApoyos)
+
 module.exports = app;
