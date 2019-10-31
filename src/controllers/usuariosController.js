@@ -70,7 +70,6 @@ usuarioController.login = (req,res)=>{
                 req.session.idUusario = user.idUsuario;
                 req.session.tipoUsuario = user.tipoUsuario;
                 let token = jwt.sign({ id: usuarios.idUsuario }, config.secret, { expiresIn: 86400});
-                console.log(req.session.tipoUsuario)
                 return res.status(200).json({
                     auth: true, token: token, user: user,
                     mensaje:"Usuario logueado"

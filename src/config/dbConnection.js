@@ -12,6 +12,6 @@ module.exports = ()=>{
         host: 'localhost',
         user: 'root',
         password:"",
-        database:"eventos_is"
+        database:"siintech_eventos"
     });
 }
