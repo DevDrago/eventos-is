@@ -5,7 +5,7 @@ const conexion = connection();
 
 actividadController.actividades = (req,res)=>{
     conexion.query(`SELECT idActividad,nombreActividad,nombres as usuario,
-                    nombreEvento, categoriaActividad,act.fechaInicio,act.fechaFin,
+                    nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%d/%m/%Y") as fechaInicio, DATE_FORMAT(act.fechaFin, "%d/%m/%Y") as fechaFin,
                     descripcion, noCupos 
                     FROM actividad act inner join usuario on (idUsuario_fk = idUsuario)
                     inner join evento on (act.idEvento_fk = idEvento)
