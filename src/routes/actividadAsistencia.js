@@ -8,6 +8,5 @@ const  actividadAsistenciaController = require("../controllers/actividadAsistenc
 app.get("/actividadasistencia", actividadAsistenciaController.actividadAsistencia)
 app.post("/actividadasistencia/crear",[verificarAutenticacion,verificarTipoUsuario],actividadAsistenciaController.crear)
 app.put("/actividadasistencia/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadAsistenciaController.actualizarAsistenciaActividad)
-/*app.delete("/actividades/eliminar", [verificarAutenticacion,verificarTipoUsuario],actividadAsistenciaController.eliminarActividad)*/
 
 module.exports = app;
