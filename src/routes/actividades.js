@@ -10,6 +10,6 @@ app.post("/actividades/crear",[verificarAutenticacion,verificarTipoUsuario],acti
 app.put("/actividades/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.actualizarActividad)
 app.delete("/actividades/eliminar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.eliminarActividad)
 
-app.get("/actividades/categorias",actividadesController.categorias)
+//app.get("/actividades/categorias",actividadesController.categorias)
 
 module.exports = app;
