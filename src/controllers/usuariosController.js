@@ -86,20 +86,6 @@ usuarioController.logout = (req,res)=>{
     })
 }
 
-usuarioController.tiposUsuario =(req,res)=>{
-    conexion.query("SELECT idTipoUsuario,tipoUsuario FROM tipo_usuario",(error,tiposUsuarios)=>{
-        if(error){
-            return res.status(500).json({
-                mensaje:"Error de servidor de base de datos",
-                error
-            })
-        }
-        return res.status(200).json({
-            tiposUsuarios
-        })
-    })
-}
-
 //Listas para selects
 usuarioController.getOrganizadores = (req,res) => {
     conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as organizador FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{

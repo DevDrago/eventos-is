@@ -6,7 +6,7 @@ const {verificarAutenticacion} = require("../middlewares/verificarAutenticacion.
 app.post("/usuarios/register",usuarioController.register)
 app.post("/usuarios/login",usuarioController.login)
 app.get("/usuarios/logout",verificarAutenticacion,usuarioController.logout)
-app.get("/usuarios/tipos",usuarioController.tiposUsuario)
+//app.get("/usuarios/tipos",usuarioController.tiposUsuario)
 
 //Listas para selects
 app.get("/usuarios/organizadores",usuarioController.getOrganizadores)
