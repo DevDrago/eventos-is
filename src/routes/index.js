@@ -8,6 +8,7 @@ app.use(require("./actividadasistencia"));
 app.use(require("./actividadresponsable"));
 app.use(require("./categoriaActividad"));
 app.use(require("./recursos"));
+app.use(require("./tipoRecurso"));
 
 
 module.exports = app;
