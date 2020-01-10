@@ -11,12 +11,12 @@ usuarioController.register = (req,res)=>{
         if(error){
             return res.status(500).json({
                 error,
-                mensaje:"Error en base de datos"
+                mensaje:"Error en base de datos."
             })
         }
         if(usuarios.length>0){
             return res.status(400).json({
-                mensaje:"Usuario con número de cuenta/empleado o correo existente"
+                mensaje:"Usuario con número de cuenta/empleado o correo existente."
             })
         }else{
             usuario.contrasenia = bcrypt.hashSync(usuario.contrasenia,10)
@@ -30,11 +30,11 @@ usuarioController.register = (req,res)=>{
                     conexion.query("Select idUsuario, idTipoUsuario_fk as tipoUsuario, numCuentaEmpleado, nombres, apellidos, correo, telefono from usuario where idUsuario = ?",
                     [result.insertId],(error, usuarioRegistrado)=>{
                         if(error){
-                            return res.status(500).json({error, mensaje:"Error al obtener el usuario registrado"});
+                            return res.status(500).json({error, mensaje:"Error al obtener el usuario registrado."});
                         }
                         if(usuarioRegistrado){
                             let token = jwt.sign({ id: result.insertId }, config.secret, {expiresIn: 86400});
-                            res.status(200).json({ auth: true, token: token, user: usuarioRegistrado[0], mensaje:"Se ha creado un nuevo Usuario" });
+                            res.status(200).json({ auth: true, token: token, user: usuarioRegistrado[0], mensaje:"Se ha creado un nuevo usuario." });
                         }
                     })
                 }
@@ -48,7 +48,7 @@ usuarioController.login = (req,res)=>{
     conexion.query("Select nombres, apellidos, telefono, correo,contrasenia,idUsuario,idTipoUsuario_fk as tipoUsuario from usuario where correo =?",[usuario.correo],(error,usuarios,fields)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"Error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos.",
                 error
             })
         }
@@ -56,7 +56,7 @@ usuarioController.login = (req,res)=>{
             return res.status(404).json({
                 auth:false,
                 token:null,
-                mensaje:"No existe ningún usuario con este correo"
+                mensaje:"No existe ningún usuario registrado con este correo."
             })
         }else{
             let user = usuarios[0]
@@ -64,7 +64,7 @@ usuarioController.login = (req,res)=>{
                 return res.status(403).json({
                     auth:false,
                     token:null,
-                    mensaje:"Contrasenia incorrecta"
+                    mensaje:"Usuario o contraseña incorrecta."
                 })
             }else{
                 req.session.idUusario = user.idUsuario;
@@ -72,7 +72,7 @@ usuarioController.login = (req,res)=>{
                 let token = jwt.sign({ id: usuarios.idUsuario }, config.secret, { expiresIn: 86400});
                 return res.status(200).json({
                     auth: true, token: token, user: user,
-                    mensaje:"Usuario logueado"
+                    mensaje:"Usuario logueado."
                 })
             }
         }
@@ -82,7 +82,7 @@ usuarioController.login = (req,res)=>{
 usuarioController.logout = (req,res)=>{
     req.session.destroy();
     return res.status(200).json({
-        mensaje:'Deslogueado'
+        mensaje:'Deslogueado.'
     })
 }
 
@@ -91,7 +91,7 @@ usuarioController.getOrganizadores = (req,res) => {
     conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as organizador FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"Error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos.",
                 error
             })
         }
@@ -104,7 +104,7 @@ usuarioController.getCoordinadores = (req,res) => {
     conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as coordinador FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"Error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos.",
                 error
             })
         }
@@ -117,7 +117,7 @@ usuarioController.getApoyos = (req,res) => {
     conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as apoyo FROM usuario where idTipoUsuario_fk = 4",(error,apoyos)=>{
         if(error){
             return res.status(500).json({
-                mensaje:"Error de servidor de base de datos",
+                mensaje:"Error de servidor de base de datos.",
                 error
             })
         }
