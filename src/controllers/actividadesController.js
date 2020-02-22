@@ -90,6 +90,21 @@ actividadController.categorias = (req,res)=>{
     })
 }
 
+actividadController.countActs = (req, res) => {
+    conexion.query("SELECT COUNT(*) as actsCount FROM actividad", (error, actsCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let acCount = actsCount[0].actsCount
+        return res.status(200).json({
+            acCount
+        })
+    })
+}
+
 
 
 

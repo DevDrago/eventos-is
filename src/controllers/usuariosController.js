@@ -126,5 +126,19 @@ usuarioController.getApoyos = (req,res) => {
         })
     })   
 }
+usuarioController.countUsers = (req, res) => {
+    conexion.query("SELECT COUNT(*) as usersCount FROM usuario", (error, usersCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let us = usersCount[0].usersCount
+        return res.status(200).json({
+            us
+        })
+    })
+}
 
 module.exports = usuarioController

@@ -10,4 +10,6 @@ app.post("/eventos/crear",[verificarAutenticacion,verificarTipoUsuario],eventosC
 app.put("/eventos/actualizar",[verificarAutenticacion,verificarTipoUsuario],eventosController.actualizarEvento)
 app.delete("/eventos/eliminar",[verificarAutenticacion,verificarTipoUsuario],eventosController.eliminarEvento)
 
+app.get("/eventos/count", eventosController.countEvents)
+
 module.exports = app;

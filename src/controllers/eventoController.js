@@ -70,5 +70,20 @@ eventoController.eliminarEvento = (req,res)=>{
     })
 }
 
+eventoController.countEvents = (req, res) => {
+    conexion.query("SELECT COUNT(*) as eventsCount FROM evento", (error, eventsCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let evCount = eventsCount[0].eventsCount
+        return res.status(200).json({
+            evCount
+        })
+    })
+}
+
 
 module.exports = eventoController

@@ -13,4 +13,6 @@ app.get("/usuarios/organizadores",usuarioController.getOrganizadores)
 app.get("/usuarios/coordinadores",usuarioController.getCoordinadores)
 app.get("/usuarios/apoyos",usuarioController.getApoyos)
 
+app.get("/usuarios/count", usuarioController.countUsers)
+
 module.exports = app;
