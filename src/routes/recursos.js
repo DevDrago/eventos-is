@@ -5,7 +5,7 @@ const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 const  recursosController = require("../controllers/recursosController")
 
 
-app.get("/recursos", recursosController.recursos)
+app.get("/recursos", [verificarAutenticacion,verificarTipoUsuario], recursosController.recursos)
 app.post("/recursos/crear",[verificarAutenticacion,verificarTipoUsuario],recursosController.crear)
 
 module.exports = app;
