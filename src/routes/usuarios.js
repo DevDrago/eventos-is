@@ -4,6 +4,7 @@ const usuarioController = require("../controllers/usuariosController.js")
 const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 const {verificarAutenticacion} = require("../middlewares/verificarAutenticacion.js")
 
+app.get("/usuarios",[verificarAutenticacion,verificarTipoUsuario],usuarioController.usuarios)
 app.post("/usuarios/register",usuarioController.register)
 app.post("/usuarios/login",usuarioController.login)
 app.get("/usuarios/logout",verificarAutenticacion,usuarioController.logout)

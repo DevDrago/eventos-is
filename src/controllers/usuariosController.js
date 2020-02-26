@@ -5,6 +5,23 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
+//Obtener todos los usuarios
+usuarioController.usuarios = (req, res)=>{
+    conexion.query(`SELECT idUsuario, numCuentaEmpleado, CONCAT(nombres, ' ', apellidos) as nombre,
+            correo, telefono, tipoUsuario 
+            FROM usuario inner join tipo_usuario on (idTipoUsuario_fk = idTipoUsuario)`,(error,users)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            users
+        })
+    })
+}
+
 usuarioController.register = (req,res)=>{
     let usuario = req.body;
     conexion.query("Select numCuentaEmpleado from usuario where numCuentaEmpleado =? or correo =? ",[usuario.numCuentaEmpleado,usuario.correo],(error,usuarios)=>{
@@ -88,7 +105,7 @@ usuarioController.logout = (req,res)=>{
 
 //Listas para selects
 usuarioController.getOrganizadores = (req,res) => {
-    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as organizador FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
+    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -101,7 +118,7 @@ usuarioController.getOrganizadores = (req,res) => {
     })   
 }
 usuarioController.getCoordinadores = (req,res) => {
-    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as coordinador FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
+    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -126,6 +143,7 @@ usuarioController.getApoyos = (req,res) => {
         })
     })   
 }
+//Count de usuarios
 usuarioController.countUsers = (req, res) => {
     conexion.query("SELECT COUNT(*) as usersCount FROM usuario", (error, usersCount) => {
         if(error){
