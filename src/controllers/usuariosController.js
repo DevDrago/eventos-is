@@ -105,7 +105,7 @@ usuarioController.logout = (req,res)=>{
 
 //Listas para selects
 usuarioController.getOrganizadores = (req,res) => {
-    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",

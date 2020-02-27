@@ -8,7 +8,7 @@ const eventosController = require("../controllers/eventoController.js");
 app.get("/eventos",[verificarAutenticacion,verificarTipoUsuario],eventosController.eventos)
 app.post("/eventos/crear",[verificarAutenticacion,verificarTipoUsuario],eventosController.crear)
 app.put("/eventos/actualizar",[verificarAutenticacion,verificarTipoUsuario],eventosController.actualizarEvento)
-app.delete("/eventos/eliminar",[verificarAutenticacion,verificarTipoUsuario],eventosController.eliminarEvento)
+app.post("/eventos/eliminar",[verificarAutenticacion,verificarTipoUsuario],eventosController.eliminarEvento)
 
 app.get("/eventos/count", [verificarAutenticacion,verificarTipoUsuario],eventosController.countEvents)
 
