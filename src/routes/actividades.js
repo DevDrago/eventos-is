@@ -11,6 +11,7 @@ app.put("/actividades/actualizar", [verificarAutenticacion,verificarTipoUsuario]
 app.delete("/actividades/eliminar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.eliminarActividad)
 
 app.get("/actividades/count", actividadesController.countActs)
-//app.get("/actividades/categorias",actividadesController.categorias)
+app.get("/actividades/categorias",actividadesController.categorias)
+app.get("/actividades/eventos",actividadesController.eventos)
 
 module.exports = app;

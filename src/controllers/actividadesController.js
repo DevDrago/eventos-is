@@ -4,9 +4,9 @@ const conexion = connection();
 
 
 actividadController.actividades = (req,res)=>{
-    conexion.query(`SELECT idActividad,nombreActividad,nombres as usuario,
-                    nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%d/%m/%Y") as fechaInicio, DATE_FORMAT(act.fechaFin, "%d/%m/%Y") as fechaFin,
-                    descripcion, noCupos 
+    conexion.query(`SELECT idActividad,nombreActividad,nombres as usuario, act.idUsuario_fk, act.idCategoriaActividad_fk,
+                    act.idEvento_fk, nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%d/%m/%Y") as fechaInicio, DATE_FORMAT(act.fechaFin, "%d/%m/%Y") as fechaFin,
+                    descripcion, noCupos, CASE WHEN act.estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS estado 
                     FROM actividad act inner join usuario on (idUsuario_fk = idUsuario)
                     inner join evento on (act.idEvento_fk = idEvento)
                     inner join categoria_actividad on (idCategoriaActividad_fk = idCategoriaActividad)`,(error,actividades)=>{
@@ -24,7 +24,7 @@ actividadController.actividades = (req,res)=>{
 
 actividadController.crear = (req,res)=>{
     let actividad = req.body
-    conexion.query("Insert into actividad (nombreActividad,idUsuario_fk,idEvento_fk,idCategoriaActividad_fk,fechaInicio,fechaFin,descripcion,noCupos) VALUES (?,?,?,?,STR_TO_DATE( ?, '%d-%m-%Y' ),STR_TO_DATE( ?, '%d-%m-%Y'),?,?)",[actividad.nombreActividad,actividad.usuario,actividad.evento,actividad.categoria,actividad.fechaInicio,actividad.fechaFin,actividad.descripcion,actividad.cupos],(error,result)=>{
+    conexion.query("Insert into actividad (nombreActividad,idUsuario_fk,idEvento_fk,idCategoriaActividad_fk,fechaInicio,fechaFin,descripcion,noCupos) VALUES (?,?,?,?,STR_TO_DATE( ?, '%d-%m-%Y' ),STR_TO_DATE( ?, '%d-%m-%Y'),?,?)",[actividad.nombreActividad,actividad.idUsuario_fk,actividad.idEvento_fk,actividad.idCategoriaActividad_fk,actividad.fechaInicio,actividad.fechaFin,actividad.descripcion,actividad.noCupo],(error,result)=>{
         if(error){
             return res.status(500).json({
                 error
@@ -77,7 +77,7 @@ actividadController.eliminarActividad = (req,res)=>{
 }
 
 actividadController.categorias = (req,res)=>{
-    conexion.query("SELECT idCategoriaActividad,categoriaActividad FROM categoria_actividad",(error,categorias)=>{
+    conexion.query("SELECT idCategoriaActividad as value,categoriaActividad as text FROM categoria_actividad",(error,categorias)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"error de servidor de base de datos",
@@ -86,6 +86,20 @@ actividadController.categorias = (req,res)=>{
         }
         return res.status(200).json({
             categorias
+        })
+    })
+}
+
+actividadController.eventos = (req,res)=>{
+    conexion.query("SELECT idEvento as value,nombreEvento as text FROM evento",(error,eventos)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            eventos
         })
     })
 }

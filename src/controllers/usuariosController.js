@@ -118,7 +118,7 @@ usuarioController.getOrganizadores = (req,res) => {
     })   
 }
 usuarioController.getCoordinadores = (req,res) => {
-    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
