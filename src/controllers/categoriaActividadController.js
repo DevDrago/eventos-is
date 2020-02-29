@@ -70,4 +70,19 @@ categoriaActividadController.eliminarCategoriaActividad = (req,res)=>{
     })
 }
 
+categoriaActividadController.actCatCount = (req, res) => {
+    conexion.query("SELECT COUNT(*) as actCatCount FROM categoria_actividad", (error, actCatCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let acCatCount = actCatCount[0].actCatCount
+        return res.status(200).json({
+            acCatCount
+        })
+    })
+}
+
 module.exports = categoriaActividadController
