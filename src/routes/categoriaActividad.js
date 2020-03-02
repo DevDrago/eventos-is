@@ -8,6 +8,6 @@ const  categoriaActividadController = require("../controllers/categoriaActividad
 app.get("/actividades/categorias", [verificarAutenticacion,verificarTipoUsuario], categoriaActividadController.categorias)
 app.post("/actividadcategoria/crear",[verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.crear)
 app.put("/actividadcategoria/actualizar", [verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.actualizarCategoriaActividad)
-app.delete("/actividadcategoria/eliminar", [verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.eliminarCategoriaActividad)
+app.post("/actividadcategoria/eliminar", [verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.eliminarCategoriaActividad)
 
 module.exports = app;

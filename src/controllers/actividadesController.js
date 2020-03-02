@@ -4,8 +4,8 @@ const conexion = connection();
 
 
 actividadController.actividades = (req,res)=>{
-    conexion.query(`SELECT idActividad,nombreActividad,nombres as usuario, act.idUsuario_fk, act.idCategoriaActividad_fk,
-                    act.idEvento_fk, nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%d/%m/%Y") as fechaInicio, DATE_FORMAT(act.fechaFin, "%d/%m/%Y") as fechaFin,
+    conexion.query(`SELECT idActividad,nombreActividad, CONCAT(nombres,' ',apellidos) as usuario, act.idUsuario_fk, act.idCategoriaActividad_fk,
+                    act.idEvento_fk, nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%Y-%m-%d") as fechaInicio, DATE_FORMAT(act.fechaFin, "%Y-%m-%d") as fechaFin,
                     descripcion, noCupos, CASE WHEN act.estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS estado 
                     FROM actividad act inner join usuario on (idUsuario_fk = idUsuario)
                     inner join evento on (act.idEvento_fk = idEvento)
@@ -24,7 +24,7 @@ actividadController.actividades = (req,res)=>{
 
 actividadController.crear = (req,res)=>{
     let actividad = req.body
-    conexion.query("Insert into actividad (nombreActividad,idUsuario_fk,idEvento_fk,idCategoriaActividad_fk,fechaInicio,fechaFin,descripcion,noCupos) VALUES (?,?,?,?,STR_TO_DATE( ?, '%d-%m-%Y' ),STR_TO_DATE( ?, '%d-%m-%Y'),?,?)",[actividad.nombreActividad,actividad.idUsuario_fk,actividad.idEvento_fk,actividad.idCategoriaActividad_fk,actividad.fechaInicio,actividad.fechaFin,actividad.descripcion,actividad.noCupo],(error,result)=>{
+    conexion.query("Insert into actividad (nombreActividad,idUsuario_fk,idEvento_fk,idCategoriaActividad_fk,fechaInicio,fechaFin,descripcion,noCupos) VALUES (?,?,?,?,?,?,?,?)",[actividad.nombreActividad,actividad.value,actividad.idEvento_fk,actividad.idCategoriaActividad_fk,actividad.fechaInicio,actividad.fechaFin,actividad.descripcion,actividad.noCupos],(error,result)=>{
         if(error){
             return res.status(500).json({
                 error
@@ -42,7 +42,7 @@ actividadController.actualizarActividad = (req,res)=>{
     let actividad = req.body
     conexion.query(`Update actividad set nombreActividad = ?,idUsuario_fk = ?,
                     idEvento_fk = ?, idCategoriaActividad_fk = ?,
-                    fechaInicio = STR_TO_DATE( ?, '%d-%m-%Y' ), fechaFin = STR_TO_DATE( ?, '%d-%m-%Y' ), 
+                    fechaInicio = ?, fechaFin = ?, 
                     descripcion = ?, noCupos = ? Where idActividad = ?`,
                     [actividad.nombreActividad,actividad.usuario,actividad.evento,actividad.categoria,actividad.fechaInicio,actividad.fechaFin,actividad.descripcion,actividad.cupos,actividad.idActividad],(error,result)=>{
         if(error){

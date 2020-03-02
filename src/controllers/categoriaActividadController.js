@@ -18,7 +18,7 @@ categoriaActividadController.categorias = (req,res)=>{
 
 categoriaActividadController.crear = (req,res)=>{
     let categoriaactividad = req.body
-    conexion.query("Insert into categoria_actividad (categoriaActividad) VALUES (?)",[categoriaactividad.nombreCategoria],(error,result)=>{
+    conexion.query("Insert into categoria_actividad (categoriaActividad) VALUES (?)",[categoriaactividad.text],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -37,7 +37,7 @@ categoriaActividadController.actualizarCategoriaActividad = (req,res)=>{
     let categoriaactividad = req.body
     conexion.query(`Update categoria_actividad set categoriaActividad = ?
     where idCategoriaActividad = ?`,
-    [categoriaactividad.nombreCategoria,categoriaactividad.idCategoriaActividad],(error,result)=>{
+    [categoriaactividad.text,categoriaactividad.value],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje: "Error de servidor de base de datos",
@@ -54,7 +54,7 @@ categoriaActividadController.actualizarCategoriaActividad = (req,res)=>{
 
 categoriaActividadController.eliminarCategoriaActividad = (req,res)=>{
     let categoriaactividad = req.body
-    conexion.query(`Delete from categoria_actividad Where idCategoriaActividad = ?`,[categoriaactividad.idCategoriaActividad],(error,result)=>{
+    conexion.query(`Delete from categoria_actividad Where idCategoriaActividad = ?`,[categoriaactividad.value],(error,result)=>{
         if(error){
             mensaje = (error.code == "ER_ROW_IS_REFERENCED_2") ? "La categoria no se puede eliminar porque tiene actividades asociadas" : "Error de servidor de base de datos"
             return res.status(500).json({
