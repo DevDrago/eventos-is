@@ -6,6 +6,7 @@ const  categoriaActividadController = require("../controllers/categoriaActividad
 
 
 app.get("/actividades/categorias", [verificarAutenticacion,verificarTipoUsuario], categoriaActividadController.categorias)
+app.get("/actividades/categorias/count",[verificarAutenticacion,verificarTipoUsuario], categoriaActividadController.actCatCount)
 app.post("/actividadcategoria/crear",[verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.crear)
 app.put("/actividadcategoria/actualizar", [verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.actualizarCategoriaActividad)
 app.post("/actividadcategoria/eliminar", [verificarAutenticacion,verificarTipoUsuario],categoriaActividadController.eliminarCategoriaActividad)
