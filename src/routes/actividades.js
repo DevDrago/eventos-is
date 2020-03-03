@@ -8,10 +8,11 @@ const  actividadesController = require("../controllers/actividadesController")
 app.get("/actividades", actividadesController.actividades)
 app.post("/actividades/crear",[verificarAutenticacion,verificarTipoUsuario],actividadesController.crear)
 app.put("/actividades/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.actualizarActividad)
-app.delete("/actividades/eliminar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.eliminarActividad)
+app.post("/actividades/eliminar", [verificarAutenticacion,verificarTipoUsuario],actividadesController.eliminarActividad)
 
 app.get("/actividades/count", actividadesController.countActs)
 app.get("/actividades/categorias",actividadesController.categorias)
 app.get("/actividades/eventos",actividadesController.eventos)
+app.get("/actividades/estados",actividadesController.estados)
 
 module.exports = app;
