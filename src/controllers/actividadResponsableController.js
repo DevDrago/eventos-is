@@ -3,7 +3,9 @@ const connection= require("../config/dbConnection.js")
 const conexion = connection();
 
 actividadResponsableController.actividadResponsable = (req, res)=> {
-    conexion.query(`SELECT nombreActividad, nombres, trabajoRealizado, totalHoras, acres.estado, DATE_FORMAT(acres.fechaRegistro, "%d/%m/%Y") as fechaRegistro
+    conexion.query(`SELECT nombreActividad, nombres, trabajoRealizado, totalHoras, 
+    acres.estado, DATE_FORMAT(acres.fechaRegistro, "%d/%m/%Y") as fechaRegistro,
+    acres.idActividad_fk, acres.idUsuario_fk
     FROM actividad_responsable acres inner join usuario on (idUsuario_fk = idUsuario)
     inner join actividad on (idActividad_fk = idActividad)`, (error, actividadresponsable)=>{
         if(error){
@@ -51,6 +53,21 @@ actividadResponsableController.actualizarResponsableActividad = (req,res)=>{
                 mensaje:"Se han actualizado los datos"
             })
         }
+    })
+}
+
+actividadResponsableController.countActRes = (req, res) => {
+    conexion.query("SELECT COUNT(*) as actResCount FROM actividad_responsable", (error, actResCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let acResCount = actResCount[0].actResCount
+        return res.status(200).json({
+            acResCount
+        })
     })
 }
 
