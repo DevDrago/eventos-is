@@ -6,6 +6,7 @@ const  actividadResponsableController = require("../controllers/actividadRespons
 
 
 app.get("/actividadresponsable", [verificarAutenticacion,verificarTipoUsuario], actividadResponsableController.actividadResponsable)
+app.get("/actividadresponsable/actividades", [verificarAutenticacion,verificarTipoUsuario], actividadResponsableController.actividades)
 app.post("/actividadresponsable/crear",[verificarAutenticacion,verificarTipoUsuario],actividadResponsableController.crear)
 app.put("/actividadresponsable/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadResponsableController.actualizarResponsableActividad)
 

@@ -5,7 +5,8 @@ const conexion = connection();
 actividadResponsableController.actividadResponsable = (req, res)=> {
     conexion.query(`SELECT nombreActividad, nombres, trabajoRealizado, totalHoras, 
     acres.estado, DATE_FORMAT(acres.fechaRegistro, "%d/%m/%Y") as fechaRegistro,
-    acres.idActividad_fk, acres.idUsuario_fk
+    acres.idActividad_fk, acres.idUsuario_fk,
+    CASE WHEN acres.estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS estado, acres.estado as id_estado 
     FROM actividad_responsable acres inner join usuario on (idUsuario_fk = idUsuario)
     inner join actividad on (idActividad_fk = idActividad)`, (error, actividadresponsable)=>{
         if(error){
@@ -22,7 +23,8 @@ actividadResponsableController.actividadResponsable = (req, res)=> {
 
 actividadResponsableController.crear = (req,res)=>{
     let actividadresponsable = req.body
-    conexion.query("Insert into actividad_responsable (idActividad_fk,idUsuario_fk,trabajoRealizado,totalHoras,estado) VALUES (?,?,?,?,?)",[actividadresponsable.actividad,actividadresponsable.usuario,actividadresponsable.trabajoRealizado,actividadresponsable.totalHoras,actividadresponsable.estado],(error,result)=>{
+    conexion.query("Insert into actividad_responsable (idActividad_fk,idUsuario_fk,trabajoRealizado,totalHoras) VALUES (?,?,?,?)",
+    [actividadresponsable.idActividad_fk,actividadresponsable.idUsuario_fk,actividadresponsable.trabajoRealizado,actividadresponsable.totalHoras],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -41,7 +43,7 @@ actividadResponsableController.actualizarResponsableActividad = (req,res)=>{
     let actividresponsable = req.body
     conexion.query(`Update actividad_responsable set trabajoRealizado = ?,totalHoras = ?, estado= ?
     where idActividad_fk = ? and idUsuario_fk = ?`,
-    [actividresponsable.trabajoRealizado,actividresponsable.totalHoras,actividresponsable.estado,actividresponsable.actividad,actividresponsable.usuario],(error,result)=>{
+    [actividresponsable.trabajoRealizado,actividresponsable.totalHoras,actividresponsable.id_estado,actividresponsable.idActividad_fk,actividresponsable.idUsuario_fk],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -67,6 +69,20 @@ actividadResponsableController.countActRes = (req, res) => {
         let acResCount = actResCount[0].actResCount
         return res.status(200).json({
             acResCount
+        })
+    })
+}
+
+actividadResponsableController.actividades = (req,res)=>{
+    conexion.query("SELECT idActividad as value,nombreActividad as text FROM actividad",(error,actResponsables)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            actResponsables
         })
     })
 }

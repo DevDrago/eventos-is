@@ -131,7 +131,7 @@ usuarioController.getCoordinadores = (req,res) => {
     })   
 }
 usuarioController.getApoyos = (req,res) => {
-    conexion.query("SELECT idUsuario, CONCAT(nombres,' ',apellidos) as apoyo FROM usuario where idTipoUsuario_fk = 4",(error,apoyos)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 4",(error,apoyos)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
