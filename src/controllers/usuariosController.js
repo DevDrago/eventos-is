@@ -143,6 +143,19 @@ usuarioController.getApoyos = (req,res) => {
         })
     })   
 }
+usuarioController.getApoyosCoordinadores = (req,res) => {
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 4 or idTipoUsuario_fk = 3",(error,apoyosCoor)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        return res.status(200).json({
+            apoyosCoor
+        })
+    })   
+}
 //Count de usuarios
 usuarioController.countUsers = (req, res) => {
     conexion.query("SELECT COUNT(*) as usersCount FROM usuario", (error, usersCount) => {

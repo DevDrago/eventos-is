@@ -58,6 +58,23 @@ actividadResponsableController.actualizarResponsableActividad = (req,res)=>{
     })
 }
 
+actividadResponsableController.eliminarResponsableActividad = (req,res)=>{
+    let actividresponsable = req.body
+    conexion.query(`Delete from actividad_responsable Where idActividad_fk = ? and idUsuario_fk = ?`,[actividresponsable.idActividad_fk,actividresponsable.idUsuario_fk],(error,result)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        if(result){
+            return res.status(200).json({
+                mensaje:"Actividad eliminada con éxito"
+            })
+        }
+    })
+}
+
 actividadResponsableController.countActRes = (req, res) => {
     conexion.query("SELECT COUNT(*) as actResCount FROM actividad_responsable", (error, actResCount) => {
         if(error){

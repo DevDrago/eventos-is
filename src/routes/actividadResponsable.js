@@ -9,6 +9,7 @@ app.get("/actividadresponsable", [verificarAutenticacion,verificarTipoUsuario], 
 app.get("/actividadresponsable/actividades", [verificarAutenticacion,verificarTipoUsuario], actividadResponsableController.actividades)
 app.post("/actividadresponsable/crear",[verificarAutenticacion,verificarTipoUsuario],actividadResponsableController.crear)
 app.put("/actividadresponsable/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadResponsableController.actualizarResponsableActividad)
+app.post("/actividadresponsable/eliminar",[verificarAutenticacion,verificarTipoUsuario],actividadResponsableController.eliminarResponsableActividad)
 
 app.get("/actividadresponsable/count", [verificarAutenticacion,verificarTipoUsuario], actividadResponsableController.countActRes)
 module.exports = app;

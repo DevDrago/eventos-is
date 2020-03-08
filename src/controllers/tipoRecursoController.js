@@ -70,4 +70,19 @@ tipoRecursoController.eliminarTipoRecurso = (req,res)=>{
     })
 }
 
+tipoRecursoController.countTipoRecurso = (req, res) => {
+    conexion.query("SELECT COUNT(*) as countTipoRecurso FROM tipo_recurso", (error, countTipoRecurso) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let tipoRecCount = countTipoRecurso[0].countTipoRecurso
+        return res.status(200).json({
+            tipoRecCount
+        })
+    })
+}
+
 module.exports = tipoRecursoController
