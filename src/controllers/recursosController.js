@@ -20,7 +20,7 @@ recursosController.recursos = (req, res)=> {
 
 recursosController.crear = (req,res)=>{
     let recursos = req.body
-    conexion.query("Insert into recurso (idActividad_fk,idTipoRecurso_fk) VALUES (?,?)",[recursos.actividad,recursos.tipoRecurso],(error,result)=>{
+    conexion.query("Insert into recurso (idActividad_fk,idTipoRecurso_fk) VALUES (?,?)",[recursos.idActividad_fk,recursos.idTipoRecurso_fk],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -32,6 +32,34 @@ recursosController.crear = (req,res)=>{
                 mensaje:"Se ha registrado el recurso"
             })
         }
+    })
+}
+
+recursosController.countRecurso = (req, res) => {
+    conexion.query("SELECT COUNT(*) as countRecurso FROM recurso", (error, countRecurso) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let recCount = countRecurso[0].countRecurso
+        return res.status(200).json({
+            recCount
+        })
+    })
+}
+recursosController.tipoRecurso = (req,res)=>{
+    conexion.query("SELECT idTipoRecurso as value,tipoRecurso as text FROM tipo_recurso",(error,tipoRecurso)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            tipoRecurso
+        })
     })
 }
 
