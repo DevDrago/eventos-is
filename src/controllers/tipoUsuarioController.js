@@ -70,4 +70,19 @@ tipoUsuarioController.eliminarTipoUsuario = (req,res)=>{
     })
 }
 
+tipoUsuarioController.countTipoUsuario = (req, res) => {
+    conexion.query("SELECT COUNT(*) as countTipoUsuario FROM tipo_usuario", (error, countTipoUsuario) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let tipoUsCount = countTipoUsuario[0].countTipoUsuario
+        return res.status(200).json({
+            tipoUsCount
+        })
+    })
+}
+
 module.exports = tipoUsuarioController
