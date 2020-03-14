@@ -11,4 +11,5 @@ app.use(require("./recursos"));
 app.use(require("./tipoRecurso"));
 app.use(require("./tipoUsuario"));
 
+
 module.exports = app;

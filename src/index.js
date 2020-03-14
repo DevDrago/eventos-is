@@ -23,6 +23,9 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(session({secret:'123456',resave:true,saveUninitialized:true}))
 app.use('/api', require("./routes/index"));
+app.get('/', function(req, res) {
+  res.send('hello world');
+});
 
 const conexion = connection();
 
