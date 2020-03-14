@@ -7,15 +7,15 @@ const mysql = require("mysql");
     database:"siintech_eventos"
 }*/
 //Configuracion para producción
-module.exports = ()=>{
+/*module.exports = ()=>{
     return mysql.createPool({
         host: 'sql177.main-hosting.eu',
         user: 'u137828084_eventos',
         password:"eventos2020",
         database:"u137828084_eventos_is"
     });
-}
-/*
+}*/
+
 module.exports = ()=>{
     return mysql.createConnection({
         host: 'localhost',
@@ -23,4 +23,4 @@ module.exports = ()=>{
         password:"",
         database:"eventos_is"
     });
-}*/
+}
