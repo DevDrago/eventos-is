@@ -35,4 +35,4 @@ conexion.connect(function(err) {
   console.log('connected as id ' + conexion.threadId);
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
