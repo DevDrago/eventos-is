@@ -8,7 +8,7 @@ const mysql = require("mysql");
 }*/
 //Configuracion para producción
 module.exports = ()=>{
-    return mysql.createConnection({
+    return mysql.createPool({
         host: '185.201.11.233',
         user: 'u137828084_eventos',
         password:"eventos2020",
