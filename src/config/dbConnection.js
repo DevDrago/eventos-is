@@ -9,7 +9,7 @@ const mysql = require("mysql");
 //Configuracion para producción
 module.exports = ()=>{
     return mysql.createPool({
-        host: '185.201.11.233',
+        host: 'sql177.main-hosting.eu',
         user: 'u137828084_eventos',
         password:"eventos2020",
         database:"u137828084_eventos_is"
