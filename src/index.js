@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 
 const conexion = connection();
 
-conexion.connect(function(err) {
+conexion.getConnection(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
