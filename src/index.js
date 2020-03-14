@@ -8,7 +8,7 @@ const path = require('path');
 // CORS 
 // Configurar cabeceras y cors
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.header('Access-Control-Allow-Origin', 'http://eventos-is.astrolabiofinal.com/');
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
@@ -29,16 +29,7 @@ app.get('/', function(req, res) {
 
 const conexion = connection();
 
-/*conexion.getConnection(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
- 
-  console.log('connected as id ' + conexion.threadId);
-});*/
-
-conexion.connect(function(err) {
+conexion.getConnection(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
@@ -46,5 +37,14 @@ conexion.connect(function(err) {
  
   console.log('connected as id ' + conexion.threadId);
 });
+
+/*conexion.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+ 
+  console.log('connected as id ' + conexion.threadId);
+});*/
 
 app.listen(process.env.PORT || 3000);
