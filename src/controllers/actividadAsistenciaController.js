@@ -2,6 +2,21 @@ const actividadAsistenciaController = {}
 const connection= require("../config/dbConnection.js")
 const conexion = connection();
 
+actividadAsistenciaController.countActAsis = (req, res) => {
+    conexion.query("SELECT COUNT(*) as actsAsisCount FROM actividad_asistencia", (error, actsAsisCount) => {
+        if(error){
+            return res.status(500).json({
+                mensaje:"Error de servidor de base de datos.",
+                error
+            })
+        }
+        let acAsisCount = actsAsisCount[0].actsAsisCount
+        return res.status(200).json({
+            acAsisCount
+        })
+    })
+}
+
 actividadAsistenciaController.actividadAsistencia = (req, res)=> {
     conexion.query(`SELECT nombreActividad, nombres, asistio, rutaDiploma, DATE_FORMAT(acas.fechaRegistro, "%d/%m/%Y") as fechaRegistro
     FROM actividad_asistencia acas inner join usuario on (idUsuario_fk = idUsuario)

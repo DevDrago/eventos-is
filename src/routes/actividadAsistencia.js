@@ -5,6 +5,7 @@ const {verificarTipoUsuario} = require("../middlewares/verificarTipoUsuario")
 const  actividadAsistenciaController = require("../controllers/actividadAsistenciaController")
 
 
+app.get("/actividadasistencia/count", actividadAsistenciaController.countActAsis)
 app.get("/actividadasistencia", [verificarAutenticacion,verificarTipoUsuario], actividadAsistenciaController.actividadAsistencia)
 app.post("/actividadasistencia/crear",[verificarAutenticacion,verificarTipoUsuario],actividadAsistenciaController.crear)
 app.put("/actividadasistencia/actualizar", [verificarAutenticacion,verificarTipoUsuario],actividadAsistenciaController.actualizarAsistenciaActividad)
