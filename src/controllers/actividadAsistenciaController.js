@@ -18,7 +18,7 @@ actividadAsistenciaController.countActAsis = (req, res) => {
 }
 
 actividadAsistenciaController.actividadAsistencia = (req, res)=> {
-    conexion.query(`SELECT nombreActividad, nombres, asistio, rutaDiploma, DATE_FORMAT(acas.fechaRegistro, "%d/%m/%Y") as fechaRegistro
+    conexion.query(`SELECT nombreActividad, CONCAT(nombres,' ',apellidos) as usuario, asistio, rutaDiploma, DATE_FORMAT(acas.fechaRegistro, "%d/%m/%Y") as fechaRegistro
     FROM actividad_asistencia acas inner join usuario on (idUsuario_fk = idUsuario)
     inner join actividad on (idActividad_fk = idActividad)`, (error, actividadasistencia)=>{
         if(error){
