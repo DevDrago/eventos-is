@@ -1,6 +1,7 @@
 const actividadAsistenciaController = {}
 const connection= require("../config/dbConnection.js")
 const conexion = connection();
+const uploadDiploma = require('../uploadDiploma.js')
 
 actividadAsistenciaController.countActAsis = (req, res) => {
     conexion.query("SELECT COUNT(*) as actsAsisCount FROM actividad_asistencia", (error, actsAsisCount) => {
@@ -18,7 +19,9 @@ actividadAsistenciaController.countActAsis = (req, res) => {
 }
 
 actividadAsistenciaController.actividadAsistencia = (req, res)=> {
-    conexion.query(`SELECT nombreActividad, CONCAT(nombres,' ',apellidos) as usuario, asistio, rutaDiploma, DATE_FORMAT(acas.fechaRegistro, "%d/%m/%Y") as fechaRegistro
+    conexion.query(`SELECT nombreActividad, acas.idActividad_fk, acas.idUsuario_fk, CONCAT(nombres,' ',apellidos) as usuario, 
+    CASE asistio WHEN '0' THEN false ELSE true END as asistio, CASE asistio WHEN '0' THEN 'No' ELSE 'Sí' END as asistioText,
+    rutaDiploma as diploma, DATE_FORMAT(acas.fechaRegistro, "%d/%m/%Y") as fechaRegistro
     FROM actividad_asistencia acas inner join usuario on (idUsuario_fk = idUsuario)
     inner join actividad on (idActividad_fk = idActividad)`, (error, actividadasistencia)=>{
         if(error){
@@ -34,8 +37,10 @@ actividadAsistenciaController.actividadAsistencia = (req, res)=> {
 }
 
 actividadAsistenciaController.crear = (req,res)=>{
-    let actividadasistencia = req.body
-    conexion.query("Insert into actividad_asistencia (idActividad_fk,idUsuario_fk,asistio,rutaDiploma) VALUES (?,?,?,?)",[actividadasistencia.actividad,actividadasistencia.usuario,actividadasistencia.asistio,actividadasistencia.rutaDiploma],(error,result)=>{
+    let actividadasistencia = req.body;
+    let asistio = actividadasistencia.asistio == true ? '1' : '0';
+    conexion.query("Insert into actividad_asistencia (idActividad_fk,idUsuario_fk,asistio) VALUES (?,?,?)",
+    [actividadasistencia.idActividad_fk,actividadasistencia.idUsuario_fk,asistio],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -52,9 +57,12 @@ actividadAsistenciaController.crear = (req,res)=>{
 
 actividadAsistenciaController.actualizarAsistenciaActividad = (req,res)=>{
     let actividadasistencia = req.body
-    conexion.query(`Update actividad_asistencia set asistio = ?,rutaDiploma = ?
+    let asistio = actividadasistencia.asistio == true ? '1' : '0';
+    console.log(actividadasistencia);
+    console.log(asistio);
+    conexion.query(`Update actividad_asistencia set asistio = ?
     where idActividad_fk = ? and idUsuario_fk = ?`,
-    [actividadasistencia.asistio,actividadasistencia.rutaDiploma,actividadasistencia.actividad,actividadasistencia.usuario],(error,result)=>{
+    [asistio,actividadasistencia.idActividad_fk,actividadasistencia.idUsuario_fk],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",
@@ -67,6 +75,36 @@ actividadAsistenciaController.actualizarAsistenciaActividad = (req,res)=>{
             })
         }
     })
+}
+
+actividadAsistenciaController.actividades = (req,res)=>{
+    conexion.query("SELECT idActividad as value,nombreActividad as text FROM actividad",(error,actAsis)=>{
+        if(error){
+            return res.status(500).json({
+                mensaje:"error de servidor de base de datos",
+                error
+            })
+        }
+        return res.status(200).json({
+            actAsis
+        })
+    })
+}
+
+actividadAsistenciaController.pdf = (req,res)=>{
+    let pdfData = req.body;
+    console.log(pdfData);
+
+    uploadDiploma.upload(pdfData).then(() => {
+        return res.status(200).json({
+            mensaje:"PDF generado exitosamente"
+        })
+    }).catch(error => {
+        return res.status(500).json({
+            mensaje:"error de servidor de base de datos",
+            error
+        })
+    });
 }
 
 module.exports = actividadAsistenciaController

@@ -15,6 +15,7 @@ app.get("/usuarios/organizadores", [verificarAutenticacion,verificarTipoUsuario]
 app.get("/usuarios/coordinadores",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getCoordinadores)
 app.get("/usuarios/apoyos",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getApoyos)
 app.get("/usuarios/apoyoscoor",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getApoyosCoordinadores)
+app.get("/usuarios/participantes",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getParticipantes)
 
 app.get("/usuarios/count", [verificarAutenticacion,verificarTipoUsuario], usuarioController.countUsers)
 
