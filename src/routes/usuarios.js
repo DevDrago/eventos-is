@@ -17,6 +17,11 @@ app.get("/usuarios/apoyos",[verificarAutenticacion,verificarTipoUsuario],usuario
 app.get("/usuarios/apoyoscoor",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getApoyosCoordinadores)
 app.get("/usuarios/participantes",[verificarAutenticacion,verificarTipoUsuario],usuarioController.getParticipantes)
 
+//C*UD
+app.post("/usuario/crear",[verificarAutenticacion,verificarTipoUsuario],usuarioController.crear)
+app.put("/usuario/actualizar", [verificarAutenticacion,verificarTipoUsuario],usuarioController.actualizarUsuario)
+app.post("/usuario/eliminar", [verificarAutenticacion,verificarTipoUsuario],usuarioController.eliminarUsuario)
+
 app.get("/usuarios/count", [verificarAutenticacion,verificarTipoUsuario], usuarioController.countUsers)
 
 module.exports = app;
