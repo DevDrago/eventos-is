@@ -44,10 +44,11 @@ uploadDiploma.upload = async function(pdfData){
                     printBackground: true,
                     landscape: true
                 });
-                await browser.close();
                 updateDiplomaPath($diplomaPath, pdfData.idActividad_fk, pdfData.idUsuario_fk).then(() =>{
                     resolve(true);
                 });
+                await browser.close();
+
                 //resolve(true)
             })();
             

@@ -37,7 +37,8 @@ actividadAsistenciaController.actividadAsistencia = (req, res)=> {
 }
 
 actividadAsistenciaController.crear = (req,res)=>{
-    let actividadasistencia = req.body;
+    let actividadasistencia = req.body[0];
+    let generateDiploma = req.body[1];
     let asistio = actividadasistencia.asistio == true ? '1' : '0';
     conexion.query("Insert into actividad_asistencia (idActividad_fk,idUsuario_fk,asistio) VALUES (?,?,?)",
     [actividadasistencia.idActividad_fk,actividadasistencia.idUsuario_fk,asistio],(error,result)=>{
@@ -48,9 +49,36 @@ actividadAsistenciaController.crear = (req,res)=>{
             })
         }
         if(result){
-            return res.status(200).json({
-                mensaje:"Se ha registrado la asistencia"
-            })
+            if(generateDiploma && asistio==='1'){
+                conexion.query(`SELECT idActividad as idActividad_fk, idUsuario as idUsuario_fk, nombreActividad, CONCAT(nombres,' ',apellidos) as usuario
+                FROM actividad_asistencia acas inner join usuario on (idUsuario_fk = idUsuario)
+                inner join actividad on (idActividad_fk = idActividad)
+                where idActividad = ? and idUsuario = ?`,[actividadasistencia.idActividad_fk,actividadasistencia.idUsuario_fk], (error, pdfData)=>{
+                    if(result){
+                        uploadDiploma.upload(pdfData[0]).then(() => {
+                            return res.status(200).json({
+                                mensaje:"PDF generado exitosamente"
+                            })
+                        }).catch(error => {
+                            return res.status(500).json({
+                                mensaje:"error de servidor de base de datos",
+                                error
+                            })
+                        });
+
+                    }else{
+                        return res.status(500).json({
+                            mensaje:"Error de servidor de base de datos",
+                            error
+                        })
+                    }
+                })
+            }else{
+                return res.status(200).json({
+                    mensaje:"Se ha registrado la asistencia"
+                })
+            }
+            
         }
     })
 }
@@ -58,8 +86,6 @@ actividadAsistenciaController.crear = (req,res)=>{
 actividadAsistenciaController.actualizarAsistenciaActividad = (req,res)=>{
     let actividadasistencia = req.body
     let asistio = actividadasistencia.asistio == true ? '1' : '0';
-    console.log(actividadasistencia);
-    console.log(asistio);
     conexion.query(`Update actividad_asistencia set asistio = ?
     where idActividad_fk = ? and idUsuario_fk = ?`,
     [asistio,actividadasistencia.idActividad_fk,actividadasistencia.idUsuario_fk],(error,result)=>{
@@ -93,8 +119,6 @@ actividadAsistenciaController.actividades = (req,res)=>{
 
 actividadAsistenciaController.pdf = (req,res)=>{
     let pdfData = req.body;
-    console.log(pdfData);
-
     uploadDiploma.upload(pdfData).then(() => {
         return res.status(200).json({
             mensaje:"PDF generado exitosamente"
