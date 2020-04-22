@@ -67,7 +67,6 @@ usuarioController.login = (req,res)=>{
     conexion.query(`SELECT idUsuario, idTipoUsuario_fk, numCuentaEmpleado,
         nombres, apellidos,correo, telefono, tipoUsuario, contrasenia FROM usuario 
         inner join tipo_usuario on (idTipoUsuario = idTipoUsuario_fk) where correo = ?`,[usuario.correo],(error,usuarios,fields)=>{
-            console.log(usuarios);
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -90,7 +89,7 @@ usuarioController.login = (req,res)=>{
                 })
             }else{
                 req.session.idUsuario = user.idUsuario;
-                req.session.usuario = user.usuario;
+                req.session.tipoUsuario = user.idTipoUsuario_fk;
                 let token = jwt.sign({ id: usuarios.idUsuario }, config.secret, { expiresIn: 86400});
                 return res.status(200).json({
                     auth: true, token: token, user: user,
@@ -110,7 +109,7 @@ usuarioController.logout = (req,res)=>{
 
 //Listas para selects
 usuarioController.getOrganizadores = (req,res) => {
-    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idusuario_fk = 2",(error,organizadores)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 2",(error,organizadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -123,7 +122,7 @@ usuarioController.getOrganizadores = (req,res) => {
     })   
 }
 usuarioController.getCoordinadores = (req,res) => {
-    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idusuario_fk = 3",(error,coordinadores)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 3",(error,coordinadores)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -136,7 +135,7 @@ usuarioController.getCoordinadores = (req,res) => {
     })   
 }
 usuarioController.getApoyos = (req,res) => {
-    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idusuario_fk = 4",(error,apoyos)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 4",(error,apoyos)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -149,7 +148,7 @@ usuarioController.getApoyos = (req,res) => {
     })   
 }
 usuarioController.getApoyosCoordinadores = (req,res) => {
-    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idusuario_fk = 4 or idusuario_fk = 3",(error,apoyosCoor)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 4 or idTipoUsuario_fk = 3",(error,apoyosCoor)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",
@@ -163,7 +162,7 @@ usuarioController.getApoyosCoordinadores = (req,res) => {
 }
 
 usuarioController.getParticipantes = (req,res) => {
-    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idusuario_fk = 5",(error,participantes)=>{
+    conexion.query("SELECT idUsuario as value, CONCAT(nombres,' ',apellidos) as text FROM usuario where idTipoUsuario_fk = 5",(error,participantes)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos.",

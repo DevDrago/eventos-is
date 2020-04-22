@@ -3,7 +3,7 @@ const connection= require("../config/dbConnection.js")
 const conexion = connection();
 
 tipoUsuarioController.tipoUsuario = (req,res)=>{
-    conexion.query("SELECT idTipoUsuario,tipoUsuario FROM tipo_usuario",(error,tiposUsuarios)=>{
+    conexion.query("SELECT idTipoUsuario as value, tipoUsuario as text FROM tipo_usuario",(error,tiposUsuarios)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"Error de servidor de base de datos",

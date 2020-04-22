@@ -1,5 +1,5 @@
 let verificarAutenticacion = (req,res,next) => {
-    if(req.session.idUusario) {
+    if(req.session.idUsuario) {
         return next();
     } else {
         res.status(401).json({
