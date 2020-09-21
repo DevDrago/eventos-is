@@ -5,7 +5,7 @@ const conexion = connection();
 
 actividadController.actividades = (req,res)=>{
     conexion.query(`SELECT idActividad,nombreActividad, CONCAT(nombres,' ',apellidos) as usuario, act.idUsuario_fk, act.idCategoriaActividad_fk,
-                    act.idEvento_fk, nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%Y-%m-%d") as fechaInicio, DATE_FORMAT(act.fechaFin, "%Y-%m-%d") as fechaFin,
+                    act.idEvento_fk, nombreEvento, categoriaActividad, DATE_FORMAT(act.fechaInicio, "%d-%m-%Y") as fechaInicioShow, DATE_FORMAT(act.fechaInicio, "%Y-%m-%d") as fechaInicio, DATE_FORMAT(act.fechaFin, "%d-%m-%Y") as fechaFinShow, DATE_FORMAT(act.fechaFin, "%Y-%m-%d") as fechaFin,
                     descripcion, noCupos, CASE WHEN act.estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS estado, act.estado as id_estado 
                     FROM actividad act inner join usuario on (idUsuario_fk = idUsuario)
                     inner join evento on (act.idEvento_fk = idEvento)

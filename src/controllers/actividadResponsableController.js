@@ -4,7 +4,7 @@ const conexion = connection();
 
 actividadResponsableController.actividadResponsable = (req, res)=> {
     conexion.query(`SELECT nombreActividad, nombres, trabajoRealizado, totalHoras, 
-    acres.estado, DATE_FORMAT(acres.fechaRegistro, "%d/%m/%Y") as fechaRegistro,
+    acres.estado, DATE_FORMAT(acres.fechaRegistro, "%d-%m-%Y") as fechaRegistro,
     acres.idActividad_fk, acres.idUsuario_fk,
     CASE WHEN acres.estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS estado, acres.estado as id_estado 
     FROM actividad_responsable acres inner join usuario on (idUsuario_fk = idUsuario)

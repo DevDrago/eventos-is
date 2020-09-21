@@ -3,7 +3,7 @@ const connection= require("../config/dbConnection.js")
 const conexion = connection();
 
 eventoController.eventos = (req,res)=>{
-    conexion.query(`SELECT idEvento,nombreEvento,CONCAT(nombres, ' ', apellidos) as usuario, date_format(fechaInicio, '%Y-%m-%d') fechaInicio, date_format(fechaFin, '%Y-%m-%d') fechaFin, idUsuario_fk
+    conexion.query(`SELECT idEvento,nombreEvento,CONCAT(nombres, ' ', apellidos) as usuario, date_format(fechaInicio, '%Y-%m-%d') fechaInicio, date_format(fechaInicio, '%d-%m-%Y') fechaInicioShow, date_format(fechaFin, '%Y-%m-%d') fechaFin, date_format(fechaFin, '%d-%m-%Y') fechaFinShow, idUsuario_fk
                     FROM evento inner join usuario on (idUsuario_fk = idUsuario)`,(error,eventos)=>{
         if(error){
             return res.status(500).json({

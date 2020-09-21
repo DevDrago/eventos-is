@@ -3,7 +3,7 @@ const connection= require("../config/dbConnection.js")
 const conexion = connection();
 
 recursosController.recursos = (req, res)=> {
-    conexion.query(`SELECT nombreActividad, tipoRecurso, DATE_FORMAT(rec.fechaRegistro, "%d/%m/%Y") as fechaRegistro
+    conexion.query(`SELECT nombreActividad, tipoRecurso, DATE_FORMAT(rec.fechaRegistro, "%d-%m-%Y") as fechaRegistro
     FROM recurso rec inner join tipo_recurso on (idTipoRecurso_fk = idTipoRecurso)
     inner join actividad on (idActividad_fk = idActividad)`, (error, recursos)=>{
         if(error){
