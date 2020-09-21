@@ -6,6 +6,7 @@ const  tipoUsuarioController = require("../controllers/tipoUsuarioController")
 
 
 app.get("/usuarios/tipos", [verificarAutenticacion,verificarTipoUsuario], tipoUsuarioController.tipoUsuario)
+app.get("/tipousuario/all", [verificarAutenticacion,verificarTipoUsuario], tipoUsuarioController.todosTipoUsuario)
 app.get("/tipousuario/count", [verificarAutenticacion,verificarTipoUsuario], tipoUsuarioController.countTipoUsuario)
 app.post("/tipousuario/crear",[verificarAutenticacion,verificarTipoUsuario],tipoUsuarioController.crear)
 app.put("/tipousuario/actualizar", [verificarAutenticacion,verificarTipoUsuario],tipoUsuarioController.actualizarTipoUsuario)
