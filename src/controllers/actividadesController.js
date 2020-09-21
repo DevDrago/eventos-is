@@ -93,7 +93,7 @@ actividadController.categorias = (req,res)=>{
 }
 
 actividadController.eventos = (req,res)=>{
-    conexion.query("SELECT idEvento as value,nombreEvento as text FROM evento",(error,eventos)=>{
+    conexion.query("SELECT idEvento as value,nombreEvento as text, date_format(fechaInicio, '%Y-%m-%d') fechaInicio, date_format(fechaFin, '%Y-%m-%d') fechaFin FROM evento",(error,eventos)=>{
         if(error){
             return res.status(500).json({
                 mensaje:"error de servidor de base de datos",
