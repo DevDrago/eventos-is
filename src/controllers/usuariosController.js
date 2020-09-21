@@ -178,6 +178,7 @@ usuarioController.getParticipantes = (req,res) => {
 //C*UD
 usuarioController.crear = (req,res)=>{
     let usuario = req.body
+    usuario.contrasenia = bcrypt.hashSync(usuario.contrasenia,10)
     conexion.query(`Insert into usuario (idTipoUsuario_fk, numCuentaEmpleado, nombres, apellidos, correo, telefono, contrasenia) VALUES (?,?,?,?,?,?,?)`,
         [usuario.idTipoUsuario_fk, usuario.numCuentaEmpleado, usuario.nombres, usuario.apellidos, usuario.correo, usuario.telefono, usuario.contrasenia],(error,result)=>{
         if(error){
@@ -196,9 +197,9 @@ usuarioController.crear = (req,res)=>{
 
 usuarioController.actualizarUsuario = (req,res)=>{
     let usuario = req.body
-    conexion.query(`Update usuario set idTipoUsuario_fk = ?, numCuentaEmpleado = ?, nombres = ?, apellidos = ?, correo = ?, telefono = ?, contrasenia = ?
+    conexion.query(`Update usuario set idTipoUsuario_fk = ?, numCuentaEmpleado = ?, nombres = ?, apellidos = ?, correo = ?, telefono = ?
     where idUsuario = ?`,
-    [usuario.idTipoUsuario_fk, usuario.numCuentaEmpleado, usuario.nombres, usuario.apellidos, usuario.correo, usuario.telefono, usuario.contrasenia, usuario.idUsuario],(error,result)=>{
+    [usuario.idTipoUsuario_fk, usuario.numCuentaEmpleado, usuario.nombres, usuario.apellidos, usuario.correo, usuario.telefono, usuario.idUsuario],(error,result)=>{
         if(error){
             return res.status(500).json({
                 mensaje: "Error de servidor de base de datos",
