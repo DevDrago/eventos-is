@@ -29,16 +29,8 @@ app.get('/', function(req, res) {
 
 const conexion = connection();
 
-/*conexion.getConnection(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
- 
-  console.log('connected as id ' + conexion.threadId);
-});*/
-
-conexion.connect(function(err) {
+//Configuracion para producción
+conexion.getConnection(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
@@ -46,5 +38,14 @@ conexion.connect(function(err) {
  
   console.log('connected as id ' + conexion.threadId);
 });
+
+/*conexion.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+ 
+  console.log('connected as id ' + conexion.threadId);
+});*/
 
 app.listen(process.env.PORT || 3000);
