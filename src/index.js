@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(session({secret:'123456',resave:true,saveUninitialized:true}))
 app.use('/api', require("./routes/index"));
 app.get('/', function(req, res) {
-  res.send('Deploy en Heroku funcionando');
+  res.send('Segundo deploy en Heroku funcionando');
 });
 
 const conexion = connection();
