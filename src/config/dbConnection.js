@@ -10,9 +10,9 @@ const mysql = require("mysql");
 module.exports = ()=>{
     return mysql.createPool({
         host: 'sql437.main-hosting.eu',
-        user: 'u476208749_eventos ',
+        user: 'u476208749_eventos',
         password:"ev_2021IS",
-        database:"u476208749_eventos"
+        database:"u476208749_eventos_system"
     });
 }
 
